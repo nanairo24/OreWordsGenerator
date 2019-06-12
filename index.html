@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>おれの言葉たちジェネレーター</title>
+	<!-- <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script> -->
+	<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+	<style>
+		body {
+			font-family: "游明朝", YuMincho, "ヒラギノ明朝 ProN W3", "Hiragino Mincho ProN", "HG明朝E", "ＭＳ Ｐ明朝", "ＭＳ 明朝", serif;
+			font-size: 18px;
+			margin: 0;
+		}
+
+		.container {
+			min-width: 646px;
+		}
+
+		.box {
+			color: rgb(29, 83, 193);
+			border: 25px solid;
+			margin: auto;
+			box-sizing: border-box;
+			width: 508px;
+			height: 666px;
+			position: relative;
+			word-break: break-all;
+		}
+
+		.vertical {
+			writing-mode: vertical-rl;
+		}
+
+		.main {
+			margin: auto;
+			position: relative;
+			top: 50%;
+			transform: translateY(-50%);
+			line-height: 40px;
+			letter-spacing: 3px;
+			white-space: nowrap;
+		}
+
+		.author {
+			height: 100%;
+			position: absolute;
+			left: 17px;
+			bottom: 15px;
+			font-size: 12px;
+			text-align: right;
+		}
+
+		span.h {
+			writing-mode: horizontal-tb;
+			letter-spacing: 0;
+		}
+
+		.title {
+			position: absolute;
+			left: -73px;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="app">
+		<div class="input-area">
+			<textarea cols="50" rows="3" v-model="text"></textarea>
+			<input type="text" v-model="author">
+		</div>
+		<div class="container">
+			<div class="box">
+				<div class="title vertical">おれの言葉たちジェネレーター</div>
+				<div class="author vertical">
+					<span v-html="htmlauthor"></span>
+				</div>
+				<div class="main vertical">
+					<span v-html="htmltext"></span>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script>
+		const app = new Vue({
+			el: '#app',
+			data: {
+				text: 'おれの言葉たちジェネレーター',
+				author: '作者$/$$20$代',
+			},
+			computed: {
+				htmltext() {
+					return this.convert(this.text)
+				},
+				htmlauthor() {
+					return this.convert(this.author)
+				}
+			},
+			methods: {
+				convert(text) {
+					return text.replace('\\$', '<doller>').replace(/\$([^$]+)\$/g, '<span class="h">$1</span>').replace('<doller>', '$').replace(/\n/g, '<br/>')
+				}
+			}
+		})
+	</script>
+</body>
+
+</html>
